@@ -41,7 +41,7 @@ export const Auth = observer(() => {
           </Form>
         )}
       </Formik>
-      <Link to={authData.link} className="auth-link">
+      <Link reloadDocument to={authData.link} className="auth-link">
         {authData.linkText}
       </Link>
     </>

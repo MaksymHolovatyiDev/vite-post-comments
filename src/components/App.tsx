@@ -5,5 +5,5 @@ import {Auth} from './Auth/Auth';
 import Comments from './Comments/Comments';
 
 export const App = observer(() => {
-  return store.getToken ? <Comments /> : <Auth />;
+  return store.token ? <Comments /> : <Auth />;
 });

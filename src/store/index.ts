@@ -1,27 +1,25 @@
-import {makeObservable, observable, computed, action} from 'mobx';
+import {makeObservable, observable, action} from 'mobx';
 
 class UserStore {
   token = '';
+  userId = '';
 
   constructor() {
     makeObservable(this, {
       token: observable,
-      getToken: computed,
-      setToken: action,
-      resetToken: action,
+      setData: action,
+      resetData: action,
     });
   }
 
-  get getToken() {
-    return this.token;
-  }
-
-  setToken(token: string) {
+  setData(token: string, _id: string) {
     this.token = token;
+    this.userId = _id;
   }
 
-  resetToken() {
+  resetData() {
     this.token = '';
+    this.userId = '';
   }
 }
 
