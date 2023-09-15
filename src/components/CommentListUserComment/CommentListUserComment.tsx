@@ -4,14 +4,17 @@ import {observer} from 'mobx-react';
 import store from '@/store';
 import CommentActionButtons from '../CommentActionButtons/CommentActionButtons';
 import CommentVote from '../CommentVote/CommentVote';
-import EditComment from '../EditCommetn/EditComment';
+import EditComment from '../EditComment/EditComment';
 import AddComment from '../AddComment/AddComment';
 import {queryClient, reply} from '@/queries';
 import {useMutation} from 'react-query';
-import {getDate} from '@/helpers';
+import {getDate, tagUser} from '@/helpers';
+import {InputButtonText} from '@/environment/variables';
+import BasicModal from '../BasicModal/BasicModal';
 
 export const CommentListUserComment = observer(({data}: {data: Comment}) => {
   const [edit, setEdit] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [showReply, setShowReply] = useState(false);
 
   const newReply = useMutation(reply, {
@@ -32,7 +35,7 @@ export const CommentListUserComment = observer(({data}: {data: Comment}) => {
           <div className="comments-list-comment__container--flex comments-list-comment__container--between">
             <div className="comments-list-comment__container--flex">
               <img
-                src="src/assets/image-ramsesmiron.webp"
+                src="src/assets/avatar.webp"
                 alt="User avatar"
                 className="comments-list-comment__img"
               />
@@ -44,25 +47,27 @@ export const CommentListUserComment = observer(({data}: {data: Comment}) => {
             </div>
             <CommentActionButtons
               currentUser={currentUser}
-              _id={data._id}
               setEdit={setEdit}
+              setOpenModal={setOpenModal}
               setShowReply={setShowReply}
             />
           </div>
           {edit ? (
             <EditComment setEdit={setEdit} text={data.text} _id={data._id} />
           ) : (
-            <p className="comments-list-comment__text--gray">{data.text}</p>
+            tagUser(data.text, data.replied)
           )}
         </div>
       </div>
       {showReply && (
         <AddComment
-          text="Reply"
+          data={{text: '@' + data.user.name + ' '}}
+          text={InputButtonText.Reply}
           addComment={addComment}
           setShowReply={setShowReply}
         />
       )}
+      {<BasicModal open={openModal} setOpen={setOpenModal} _id={data._id} />}
     </>
   );
 });

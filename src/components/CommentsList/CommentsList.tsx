@@ -1,11 +1,12 @@
 import {useQuery} from 'react-query';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import CommentsListItem from '../CommentsListItem/CommentsListItem';
 import {getAllComments} from '@/queries';
 import Spinner from '../Spinner/Spinner';
 import {Comment} from '@/Types';
 
-function CommentsList({list}: any) {
+function CommentsList() {
+  const list: any = useRef();
   const {data, isLoading, isSuccess} = useQuery('commentsList', getAllComments);
 
   useEffect(() => {

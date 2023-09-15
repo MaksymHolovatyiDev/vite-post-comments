@@ -5,9 +5,13 @@ function CommentsListItem({data}: {data: Comment}) {
   return (
     <div>
       <CommentListUserComment data={data} />
-      <div className="reply">
-        <CommentListUserComment data={data} />
-      </div>
+      <ul className="reply">
+        {data.Comments.map(el => (
+          <li key={el._id}>
+            <CommentListUserComment data={el} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

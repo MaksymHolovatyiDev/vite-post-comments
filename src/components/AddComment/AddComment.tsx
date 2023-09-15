@@ -4,16 +4,17 @@ import {Formik, Form, Field} from 'formik';
 function AddComment({data, addComment, text, setShowReply}: AddUserComment) {
   return (
     <div className="base-start add-comments__wrapper">
-      <div className="test"></div>
+      <img className="user-avatar" src="src/assets/avatar.webp" alt="avatar" />
       <Formik
         initialValues={{comment: data?.text ?? ''}}
-        onSubmit={async (values, {setSubmitting}) => {
+        onSubmit={async (values, {setSubmitting, resetForm}) => {
           if (values.comment) {
             await addComment(values.comment);
             if (setShowReply) setShowReply(prevState => !prevState);
           }
 
           setSubmitting(false);
+          resetForm();
         }}>
         {({handleBlur, handleChange, handleSubmit, isSubmitting}) => (
           <Form onSubmit={handleSubmit} className="full-hw base-start">

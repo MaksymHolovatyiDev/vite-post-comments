@@ -1,5 +1,10 @@
 import {MainRoutes} from './routes';
 
+export enum InputButtonText {
+  Send = 'Send',
+  Reply = 'Reply',
+}
+
 export const login = {
   data: [
     {

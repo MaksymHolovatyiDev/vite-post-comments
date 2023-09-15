@@ -2,12 +2,12 @@ import {useMutation} from 'react-query';
 import AddComment from '../AddComment/AddComment';
 import CommentsList from '../CommentsList/CommentsList';
 import {addNewComment, queryClient} from '@/queries';
-import {useRef, useEffect} from 'react';
+import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MainRoutes} from '@/environment/routes';
+import { InputButtonText } from '@/environment/variables';
 
 function Comments() {
-  const list: any = useRef();
   const navigate = useNavigate();
 
   const newComment = useMutation(addNewComment, {
@@ -23,9 +23,9 @@ function Comments() {
   }, []);
 
   return (
-    <div className="comments ">
-      <CommentsList list={list} />
-      <AddComment addComment={addComment} text="Send" />
+    <div className="comments">
+      <CommentsList />
+      <AddComment addComment={addComment} text={InputButtonText.Send} />
     </div>
   );
 }

@@ -1,24 +1,16 @@
 import {CommentButtons} from '@/Types';
-import {deleteUserComment, queryClient} from '@/queries';
 import {ReactComponent as SvgDelete} from '@assets/icon-delete.svg';
 import {ReactComponent as SvgEdit} from '@assets/icon-edit.svg';
 import {ReactComponent as SvgReply} from '@assets/icon-reply.svg';
-import {useMutation} from 'react-query';
 
 function CommentActionButtons({
   currentUser,
-  _id,
   setEdit,
   setShowReply,
+  setOpenModal,
 }: CommentButtons) {
-  const deleteComment = useMutation(deleteUserComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('commentsList');
-    },
-  });
-
   const onDeleteClick = () => {
-    deleteComment.mutate(_id);
+    setOpenModal(true);
   };
 
   const onEditClick = () => {
@@ -30,7 +22,7 @@ function CommentActionButtons({
   };
 
   return (
-    <div className="comments-list-comment__container--flex">
+    <div className="comments-list-comment__container--flex action-btns-container">
       {currentUser ? (
         <>
           <button
