@@ -8,9 +8,13 @@ import EditComment from '../EditComment/EditComment';
 import AddComment from '../AddComment/AddComment';
 import {queryClient, reply} from '@/queries';
 import {useMutation} from 'react-query';
-import {getDate, tagUser} from '@/helpers';
+import {tagUser} from '@/helpers';
 import {InputButtonText} from '@/environment/variables';
 import BasicModal from '../BasicModal/BasicModal';
+import * as dayjs from 'dayjs';
+import * as relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 export const CommentListUserComment = observer(({data}: {data: Comment}) => {
   const [edit, setEdit] = useState(false);
@@ -42,7 +46,7 @@ export const CommentListUserComment = observer(({data}: {data: Comment}) => {
               <p className="comments-list-comment__name">{data.user.name}</p>
               {currentUser && <p className="comments-list-comment__you">you</p>}
               <p className="comments-list-comment__text--gray">
-                {getDate(data.createdAt)} ago
+                {dayjs(data.createdAt).fromNow()}
               </p>
             </div>
             <CommentActionButtons
