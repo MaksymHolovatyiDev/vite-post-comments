@@ -1,42 +1,38 @@
-enum Seconds {
-  seconds = 60,
-  minutes = seconds * 60,
-  hours = minutes * 60,
-  days = hours * 24,
+import * as dayjs from 'dayjs';
+
+enum Time {
+  Base = 60,
+  Hours = 24,
+  Weeks = 7,
 }
 
 export const getDate = (data: string) => {
-  const date = new Date();
-  const currentDate = new Date(Date.parse(data));
-  const dateSeconds = (Date.now() - Date.parse(data)) / 1000;
+  const currentDate = dayjs();
+  const postDate = dayjs(data);
 
   let dateString;
-  let dateNumber;
 
-  if ((dateNumber = date.getFullYear() - currentDate.getFullYear())) {
-    dateString = dateNumber + ' year';
-  } else if ((dateNumber = date.getMonth() - currentDate.getMonth())) {
-    dateString = dateNumber + ' month';
+  console.log(currentDate.diff(postDate, 'months'));
+
+  if (currentDate.diff(postDate, 'seconds') < Time.Base) {
+    dateString = currentDate.diff(postDate, 'seconds') + ' second';
+  } else if (currentDate.diff(postDate, 'minutes') < Time.Base) {
+    dateString = currentDate.diff(postDate, 'minutes') + ' minute';
+  } else if (currentDate.diff(postDate, 'hours') < Time.Hours) {
+    dateString = currentDate.diff(postDate, 'hours') + ' hour';
+  } else if (currentDate.diff(postDate, 'days') < Time.Weeks) {
+    dateString = currentDate.diff(postDate, 'days') + ' days';
+  } else if (currentDate.diff(postDate, 'days') < Time.Weeks) {
+    dateString = currentDate.diff(postDate, 'days') + ' days';
+  } else if (currentDate.diff(postDate, 'months')) {
+    dateString = currentDate.diff(postDate, 'weeks') + ' week';
+  } else if (currentDate.diff(postDate, 'years')) {
+    dateString = currentDate.diff(postDate, 'months') + ' month';
   } else {
-    if (dateSeconds < Seconds.seconds) {
-      dateNumber = Math.ceil(dateSeconds);
-      dateString = dateNumber + ' second';
-    } else if (dateSeconds < Seconds.minutes) {
-      dateNumber = Math.floor(dateSeconds / Seconds.seconds);
-      dateString = dateNumber + ' minute';
-    } else if (dateSeconds < Seconds.hours) {
-      dateNumber = Math.floor(dateSeconds / Seconds.minutes);
-      dateString = dateNumber + ' hour';
-    } else if (dateSeconds < Seconds.days * 7) {
-      dateNumber = Math.floor(dateSeconds / Seconds.hours);
-      dateString = dateNumber + ' day';
-    } else {
-      dateNumber = Math.floor((dateSeconds / Seconds.days) * 7);
-      dateString = dateNumber + ' week';
-    }
+    dateString = currentDate.diff(postDate, 'years') + ' year';
   }
 
-  return dateNumber === 1 ? dateString : dateString + 's';
+  return dateString.split(' ')[0] === '1' ? dateString + 's' : dateString;
 };
 
 export const tagUser = (text: string, replied: boolean) => {
